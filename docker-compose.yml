@@ -1,0 +1,134 @@
+version: "3.9"
+services:
+  fpm-server:
+    container_name: php7.4.30-fpm
+    image: mrl6666/php7.4.30-fpm:v0.0.4
+    restart: always
+    ports:
+      - 8000:8000
+      - 9003:9003
+    volumes:
+      - /Users/mr_l/WorkSpace/php:/app
+    networks:
+      - web-app
+  # memcache-server:
+  #   container_name: memcache
+  #   image: memcached:1.6.15
+  #   restart: always
+  #   networks:
+  #     - web-app
+  #   ports:
+  #     - 11211:11211
+  redis-server:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - web-app
+  mariadb-server:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 12345
+    volumes:
+      - /Users/mr_l/Desktop/MariaDB/data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - web-app
+  rabbitmq-server:
+    container_name: rabbitmq
+    image: rabbitmq:3.11.10-management
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: 123456
+    networks:
+      - web-app
+  # postgres-server:
+  #   container_name: postgres
+  #   image: postgres:latest
+  #   restart: always
+  #   environment:
+  #     POSTGRES_PASSWORD: 12345
+  #   volumes:
+  #     - /Users/mr_l/Desktop/postgresql/data:/var/lib/postgresql/data
+  #   ports:
+  #     - 5432:5432
+  #   networks:
+  #     - web-app
+  # mongodb-server:
+  #   container_name: mongodb
+  #   image: mongo:latest
+  #   restart: always
+  #   ports:
+  #     - 27017:27017
+  #   networks:
+  #     - web-app
+  # zookeeper-server:
+  #   container_name: zookeeper
+  #   image: wurstmeister/zookeeper:latest
+  #   restart: always
+  #   ports:
+  #     - 2181:2181
+  #   networks:
+  #     - web-app
+  # kafka-server-node0:
+  #   container_name: kafka-node0
+  #   image: wurstmeister/kafka:latest
+  #   restart: always
+  #   environment:
+  #     KAFKA_BROKER_ID: 0
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper-server:2181
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-server-node0:9092
+  #     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092 
+  #   # ports:
+  #   #   - 9092:9092
+  #   networks:
+  #     - web-app
+  # kafka-server-node1:
+  #   container_name: kafka-node1
+  #   image: wurstmeister/kafka:latest
+  #   restart: always
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper-server:2181
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-server-node1:9092
+  #     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092 
+  #   # ports:
+  #   #   - 9092:9092
+  #   networks:
+  #     - web-app
+  # kafka-server-node2:
+  #   container_name: kafka-node2
+  #   image: wurstmeister/kafka:latest
+  #   restart: always
+  #   environment:
+  #     KAFKA_BROKER_ID: 2
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper-server:2181
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-server-node2:9092
+  #     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092 
+  #   # ports:
+  #   #   - 9092:9092
+  #   networks:
+  #     - web-app
+  # kafka-map:
+  #   container_name: kafka-map
+  #   image: dushixiang/kafka-map:latest
+  #   restart: always
+  #   environment:
+  #     DEFAULT_USERNAME: admin
+  #     DEFAULT_PASSWORD: admin
+  #   ports:
+  #     - 8089:8080
+  #   networks:
+  #     - web-app
+networks:
+  web-app:
+    driver: bridge
