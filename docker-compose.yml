@@ -51,6 +51,14 @@ services:
       RABBITMQ_DEFAULT_PASS: 123456
     networks:
       - web-app
+  beanstalkd-server:
+    container_name: beanstalkd
+    image: schickling/beanstalkd
+    restart: always
+    ports:
+      - 11300:11300
+    networks:
+      - web-app
   # postgres-server:
   #   container_name: postgres
   #   image: postgres:latest
